@@ -26,7 +26,7 @@ Before you can run the API, make sure you have the following prerequisites insta
 - run npm install
 ## 1. Clone the repository to your local machine:
 
- -  git clone https://github.com/CRUDify/api.git  /////
+ -  git clone https://github.com/CRUDify/
 
  **Navigate to the project directory:**
  - cd api
