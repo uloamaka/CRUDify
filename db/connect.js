@@ -12,7 +12,7 @@ const mongoose = require("mongoose");
 const connectDB = async () => {
   try {
     const url =
-      process.env.MONGODB_URL || "mongodb://localhost:27017/hngTask2DB";
+      process.env.MONGODB_URL;
 
     await mongoose.connect(url, {
       useNewUrlParser: true,
