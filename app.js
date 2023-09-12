@@ -1,10 +1,14 @@
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const helmet = require("helmet");
 const morgan = require("morgan");
 
 app.use(express.json());
 app.use(bodyParser.json());
+app.use(cors());
+app.use(helmet());
 app.use(morgan("combined"));
 
 require("dotenv").config();
