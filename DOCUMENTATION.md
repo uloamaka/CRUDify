@@ -163,6 +163,9 @@ GET /api/64ff < Wrong user id >
 - Configure the domain and SSL certificate (if required).
 - That's it! You can now access the API at your deployment URL.
 
+- ## UML DIAGRAM
+*LINK* https://lucid.app/lucidchart/e4e345e8-19da-407c-9920-b079544679b7/edit?viewport_loc=-236%2C-418%2C2346%2C1047%2C0_0&invitationId=inv_0138a24a-008a-42e7-b888-f14c40084274
+
 For further assistance or inquiries, contact support@CRUDify.com. <GIFTEDGRIT>
 
 
