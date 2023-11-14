@@ -1,5 +1,6 @@
 const Person = require("../model/peopleModel");
 const { validationResult } = require("express-validator");
+const { ObjectId } = require("mongodb");
 
 const createPerson = async (req, res) => {
   const errors = validationResult(req);
@@ -10,31 +11,48 @@ const createPerson = async (req, res) => {
   const { name } = req.body;
 
   try {
-    if (!name) {
-      return res.status(400).json({ error: "Name is required" });
+      if (!name) {
+        return res.status(400).json({
+          error: {
+            msg: "Name is required",
+            param: "name",
+            location: "body",
+          },
+        });
     }
-    // Create a new Person object with the name field
+    
     const person = new Person({ name });
     const savedPerson = await person.save();
-    res.json(savedPerson);
+    res.status(201).json({
+      message: `${savedPerson.name} saved successfully`,
+      user_id: `${savedPerson._id}`,
+    });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    if (error.code === 11000 && error.keyPattern.name) {
+      res.status(400).json({ error: "Name Already Exists, Try another name." });
+  } else {
+    res.status(500).json({ error: error.message });
+  }
   }
 };
 
 const getPerson = async (req, res) => {
   try {
     const { user_id } = req.params;
+    if (!ObjectId.isValid(user_id)) {
+      return res.status(400).json({ error: "Invalid user_id format." });
+    }
     const person = await Person.findById(user_id);
     if (!person) {
       return res.status(404).json({ error: "Person not found." });
     }
-    res.json(person);
+    res.status(200).json(person);
   } catch (err) {
     console.error(err);
-    res.status(500).json({ error: "Failed to fetch person details." });
+    res.status(500).json({ error: error.message });
   }
 };
+
 
 const updatePerson = async (req, res) => {
   const errors = validationResult(req);
@@ -44,6 +62,12 @@ const updatePerson = async (req, res) => {
 
   const { user_id } = req.params;
   const { name } = req.body;
+  if (!ObjectId.isValid(user_id)) {
+     return res.status(400).json({ error: "Invalid user_id format." });
+  }
+  if (!name) {
+    return res.status(400).json({error: "name is required"})
+  }
   try {
     const person = await Person.findOneAndUpdate(
       { _id: user_id },
@@ -59,18 +83,25 @@ const updatePerson = async (req, res) => {
 
     res.json(person);
   } catch (error) {
-    res.status(500).json({ error: error.message }); 
+     if (error.code === 11000 && error.keyPattern.name) {
+       res.status(400).json({ error: "Name Already Exists, Try another name." });
+     } else {
+       res.status(500).json({ error: error.message });
+     }
   }
 };
 
 const deletePerson = async (req, res) => {
   const { user_id } = req.params;
+   if (!ObjectId.isValid(user_id)) {
+     return res.status(400).json({ error: "Invalid user_id format." });
+   }
   try {
     const person = await Person.findByIdAndRemove(user_id);
     if (!person) throw new Error("Person not found, pass the correct user_id");
-    res.json({ message: "Person removed" });
+    res.status(204).json();;
   } catch (error) {
-    res.status(404).json({ error: error.message });
+    res.status(500).json({ error: error.message });
   }
 };
 
