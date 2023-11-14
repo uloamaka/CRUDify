@@ -26,7 +26,7 @@ Before you can run the API, make sure you have the following prerequisites insta
 - run npm install
 ## 1. Clone the repository to your local machine:
 
- -  git clone https://github.com/CRUDify/api.git  /////
+ -  git clone https://github.com/CRUDify/
 
  **Navigate to the project directory:**
  - cd api
@@ -62,7 +62,9 @@ Before you can run the API, make sure you have the following prerequisites insta
 - To run tests, use the following command:
 
 - npm test
-## UML DIAGRAM
+
+- ## UML DIAGRAM
 *LINK* https://lucid.app/lucidchart/e4e345e8-19da-407c-9920-b079544679b7/edit?viewport_loc=-236%2C-418%2C2346%2C1047%2C0_0&invitationId=inv_0138a24a-008a-42e7-b888-f14c40084274
+
 ## 6. License
 This project is licensed under the MIT License. See the LICENSE file for details.
