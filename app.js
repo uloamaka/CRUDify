@@ -3,7 +3,6 @@ const app = express();
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 const helmet = require("helmet");
-const morgan = require("morgan");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const cors = require("cors");
@@ -52,7 +51,7 @@ const PORT = process.env.PORT || 3000;
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGOURI);
+    await connectDB(process.env.MONGOURI || "");
     app.listen(PORT, () => console.log(`app is listening on port ${PORT}...`));
   } catch (error) {
     console.log(error);

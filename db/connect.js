@@ -1,18 +1,7 @@
 const mongoose = require("mongoose");
-// const localDB = "mongodb://localhost:27017/hngTask2DB";
-  // const connectDB = async () => {
-  //   await mongoose
-  //     .connect(localDB, {
-  //       useNewUrlParser: true,
-  //       useUnifiedTopology: true,
-  //     })
-  //     .then(() => console.log("mongoDB connected successfully!"))
-  //     .catch((err) => console.error("Could not connect to mongoDB", err));
-  // };
 const connectDB = async () => {
   try {
-    const url =
-      process.env.MONGODB_URL;
+    const url = process.env.MONGODB_URL || process.env.Local_DB;
 
     await mongoose.connect(url, {
       useNewUrlParser: true,
