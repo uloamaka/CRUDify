@@ -132,11 +132,9 @@ const updatePerson = async (req, res) => {
 
     res.json(person);
   } catch (error) {
-    if (error.code === 11000 && error.keyPattern.name) {
-      res.status(400).json({ error: "Name Already Exists, Try another name." });
-    } else {
+  
       res.status(500).json({ error: error.message });
-    }
+    
   }
 };
 
