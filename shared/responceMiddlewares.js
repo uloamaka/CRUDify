@@ -1,9 +1,11 @@
 const responseUtilities = function (req, res, next) {
+  // attach custom response functions
   res.ok = (payload, meta) => customOkHelper(payload, meta, res);
   res.created = (payload) => customCreatedHelper(payload, res);
   res.noContent = () => customNoContentHelper(res);
-  res.error = (statusCode, message, errCode) =>
+  res.error = (statusCode, message, errorCode) =>
     customErrorHelper(res, statusCode, message, errorCode);
+
   next();
 };
 
@@ -16,7 +18,7 @@ function customCreatedHelper(payload, res) {
 }
 
 function customNoContentHelper(res) {
-  return res.status(204);
+  return res.sendStatus(204);
 }
 
 function customErrorHelper(res, statusCode, message, errorCode) {

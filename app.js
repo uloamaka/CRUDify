@@ -1,3 +1,4 @@
+require("express-async-errors");
 const express = require("express");
 const app = express();
 const bodyParser = require("body-parser");
@@ -6,13 +7,16 @@ const helmet = require("helmet");
 const swaggerUI = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
 const cors = require("cors");
+const responseUtilities = require("./shared/responceMiddlewares");
+const { errorLogger, errorHandler } = require("./shared/errorMiddlewares");
+const { UNKNOWN_ENDPOINT } = require("./errors/httpErrorCodes");
 
-
+app.use(responseUtilities);
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cors());
 app.use(helmet());
-app.use(morgan("combined"));
+app.use(morgan("dev"));
 
 require("dotenv").config();
 const connectDB = require("./db/connect");
@@ -31,21 +35,28 @@ const options = {
     servers: [
       {
         url: "http://localhost:3000",
-        description: "dev server"
+        description: "dev server",
       },
       {
         url: "https://crudify.onrender.com",
         description: "production server",
       },
-    
     ],
   },
   apis: ["./routes/*.js"],
 };
 
-const specs = swaggerJsDoc(options)
+const specs = swaggerJsDoc(options);
 
-app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs))
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+
+http: app.use(errorLogger);
+app.use(errorHandler);
+
+app.use((req, res) => {
+  // use custom helper function
+  res.error(404, "Resource not found", UNKNOWN_ENDPOINT);
+});
 
 const PORT = process.env.PORT || 3000;
 
